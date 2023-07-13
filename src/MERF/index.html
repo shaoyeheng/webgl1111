@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title>MERF Viewer</title>
+<style>
+body {
+  font-family: Helvetica, "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  background: #FFF;
+  padding: 20px;
+  margin: 0;
+  text-align: center;
+}
+
+#error {
+  display: none;
+  position: fixed;
+  top: 20px; left: 20px; right: 20px; bottom: 20px;
+  background: #444;
+  padding: 8px;
+  white-space: pre;
+  color: #fff;
+  font-family: monospace;
+  font-weight: bold;
+}
+
+#Loading {
+  position: absolute;
+  top: 12px;
+  left: 90px;
+}
+
+#Loading h4 {
+  margin: 0px;
+}
+
+#loading-container {
+  width: 150px;
+  height: 150px;
+  padding: 0px;
+  margin: -40px 0 0 -40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.loading-bgbox {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  background-color: #DDD;
+  width: 65px;
+  height: 65px;
+}
+
+#topleft {
+  top: 5px;
+  left: 5px;
+}
+
+#bottomleft {
+  bottom: 5px;
+  left: 5px;
+}
+
+#topright {
+  top: 5px;
+  right: 5px;
+}
+
+#bottomright {
+  bottom: 5px;
+  right: 5px;
+}
+
+#loading-indicator {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 65px;
+  height: 65px;
+  background-color: #999;
+  animation-name: indicator;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes indicator {
+  0%   {top: 5px; left: 5px; }
+  25%  {top: 5px; left: 80px; }
+  50%  {top: 80px; left: 80px; }
+  75%  {top: 80px; left: 5px; }
+}
+
+#viewspacecontainer {
+  position: relative;
+  text-align: center;
+  display: none;
+  border: 3px solid #000;
+}
+
+/* The main MERF view */
+.view {
+  margin: auto;
+  overflow: hidden;
+  transform-origin: top left;
+  background: #fff;
+}
+</style>
+</head>
+<body>
+
+<div id="error"></div>
+
+<div id="viewspacecontainer" style="display: inline-block;">
+  <div id="Loading" style="display: none;">
+    <h4>
+    <span id="image-progress">Loading images: 29/29</span>
+    </h4>
+  </div>
+  <div id="loading-container" style="display: none;">
+    <div id="topleft" class="loading-bgbox"></div>
+    <div id="bottomleft" class="loading-bgbox"></div>
+    <div id="topright" class="loading-bgbox"></div>
+    <div id="bottomright" class="loading-bgbox"></div>
+    <div id="loading-indicator"></div>
+  </div>
+  <div class="viewspace" id="viewspace"><div class="view" style="width: 1280px; height: 700px;"><canvas width="1280" height="700" style="width: 1280px; height: 700px;"></canvas></div><div style="position: absolute; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;"><canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas><canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas></div></div>
+<button style="position: absolute; top: 0px; width: 250px; margin: 0px 0px 0px -125px;">Click to enable mouse navigation</button></div>
+
+<!--
+<script src="https://unpkg.com/three@0.113.1/build/three.js"></script>
+<script src="https://unpkg.com/three@0.113.1/examples/js/controls/OrbitControls.js"></script>
+<script src="https://unpkg.com/three@0.113.1/examples/js/controls/PointerLockControls.js"></script>
+<script src="https://unpkg.com/png-js@1.0.0/zlib.js"></script>
+<script src="https://unpkg.com/png-js@1.0.0/png.js"></script>
+<script src="https://unpkg.com/stats-js@1.0.1/build/stats.min.js"></script>
+-->
+<!-- creiser@ unpkg.com is currently unreliable so I downloaded scripts manually.
+Scripts cannot be checked into google3 though because of copyright stuff -->
+
+<!-- third party -->
+<script src="../../public/merf/js/three.js"></script>
+<script src="../../public/merf/OrbitControls.js"></script>
+<script src="../../public/merf/PointerLockControls.js"></script>
+<script src="../../public/merf/zlib.js"></script>
+<script src="../../public/merf/png.js"></script>
+<script src="../../public/merf/stats.min.js"></script>
+
+<!-- own code-->
+<script src="../../public/merf/progressive.js"></script>
+<script src="../../public/merf/viewdependency.js"></script>
+<script src="../../public/merf/defaultposes.js"></script>
+<script src="../../public/merf/input.js"></script>
+<script src="../../public/merf/index.js"></script>
+
+
+</body></html>

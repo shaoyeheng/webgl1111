@@ -1,0 +1,2 @@
+资源文件放入resources中！
+pixelstreaming，暂时保留，并拷贝到export中。用来作为流渲染页面。

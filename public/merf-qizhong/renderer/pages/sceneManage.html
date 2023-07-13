@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>场景管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <script src="/layui/layui.js"></script>
+  <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div style="padding: 6px;"> 
+  <table class="layui-hide" id="sceneTab" lay-filter="sceneTab"></table>
+</div>
+<script type="text/html" id="toolbarScene">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm layui-bg-blue" lay-event="getCheckData"><i class="layui-icon layui-icon-add-1" style="padding-right:5px;"></i>新增</button>
+  </div>
+</script>
+<script type="text/html" id="barScene">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-bg-red" lay-event="delete">删除</a>
+    </div>
+</script> 
+
+<script>
+const httpUrl = '/livescene';
+
+layui.use(['table', 'dropdown'], function(){
+  var table = layui.table;
+  var dropdown = layui.dropdown;
+  layui.sceneId = 0;
+  
+  // 创建渲染实例
+  table.render({
+    elem: '#sceneTab'
+    ,url:httpUrl+'/scene/pageList' // 此处为静态模拟数据，实际使用时需换成真实接口
+    ,toolbar: '#toolbarScene'
+    ,defaultToolbar: []
+    ,height: 'full-35' // 最大高度减去其他容器已占有的高度差
+    ,css: [ // 重设当前表格样式
+      '.layui-table-tool-temp{padding-right: 145px;}'
+    ].join('')
+    ,cellMinWidth: 80
+    ,totalRow: false // 开启合计行
+    ,page: false
+    ,cols: [[
+      {field:'sceneName', title: '场景名称', width:105}
+      ,{field:'positionX', title:'位置X', width: 140}
+      ,{field:'positionY', title:'位置Y', width: 140}
+      ,{field:'positionZ', title:'位置Z', width: 140}
+      ,{field:'rotationX', title:'旋转X', width: 140}
+      ,{field:'rotationY', title:'旋转Y', width: 140}
+      ,{field:'rotationZ', title:'旋转Z', width: 140}
+      ,{fixed: 'right', title:'操作', width: 110, minWidth: 110, toolbar: '#barScene'}
+    ]]
+    ,done: function(){
+    }
+    ,error: function(res, msg){
+      console.log(res, msg)
+    }
+  });
+  
+  // 工具栏事件
+  table.on('toolbar(sceneTab)', function(obj){
+    layer.open({
+        type: 2,
+        title: '新增场景',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['680px', '100%'],
+        content: 'sceneAdd.html'
+    });
+  });
+ 
+  // 触发单元格工具事件
+  table.on('tool(sceneTab)', function(obj){
+    var data = obj.data;
+    if(obj.event === 'edit'){
+      layer.open({
+        type: 2,
+        title: '修改场景',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['680px', '100%'],
+        content: 'sceneEdit.html'
+      });
+      layui.sceneId = data.sceneId;
+    } else if(obj.event === 'delete'){
+        layer.confirm('确定要删除吗？', {icon: 3}, function(){
+            $.ajax({
+                method: "delete",
+                url: httpUrl+'/scene/'+data.sceneId,
+                success: function( data ) {
+                    table.reload('sceneTab')
+                    layer.msg('删除成功', {icon: 1,time: 1000});
+                }
+            });
+        }, function(){
+            
+        });
+    }
+  });
+});
+</script>
+</body>
+</html>
